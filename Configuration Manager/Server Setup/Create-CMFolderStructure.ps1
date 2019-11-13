@@ -9,6 +9,10 @@ Automate the creation of the Sourcefiles/Packages folder structure for storing i
 .EXAMPLE
 .\Create-CMFolderStructure.ps1 -Sourcefolder H:\Sourcefolder -NetworkShareName Sourcefolder$
 
+.\Create-CMFolderStructure.ps1 -Sourcefolder H:\Sourcefolder -NetworkShareName Sourcefolder$ -NetworkAccessAccount "SamAccountName"
+
+.\Create-CMFolderStructure.ps1 -Sourcefolder H:\Sourcefolder -NetworkShareName Sourcefolder$ -CreateExtraFolders
+
 .NOTES
 
 
@@ -22,8 +26,12 @@ Param(
     [STRING]$SourceFolder,
     [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [STRING]$NetworkShareName,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()]
     [STRING]$SCCMMachineName = $env:COMPUTERNAME,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()]
     [STRING]$DomainName = $env:USERDOMAIN,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()]
+    [STRING]$NetworkAccessAccount = $null,
     [SWITCH]$CreateExtraFolders
 )
 
@@ -35,7 +43,10 @@ Begin{
         }
         if( -not(Get-InstalledModule -name "NTFSSecurity" -ErrorAction SilentlyContinue ) ){ 
             Write-Warning "Installing 'NTFSSecurity' PowerShell Module. Please wait ..."
-            Install-Module -name "NTFSSecurity" -Force -Confirm:false 
+            Install-Module -name "NTFSSecurity" -Force -confirm:$false
+        }
+        if(Test-Path -Path $SourceFolder){
+            Write-Warning "$SourceFolder Folder already exists. Exiting ...."; Exit 1
         }
     }Catch{
         Write-Warning "An error occurred:"
@@ -52,9 +63,9 @@ Process{
 
     # Applications and Packages Type content
     New-Item -ItemType Directory "$SourceFolder\Packages" | Out-Null
-    New-Item -ItemType Directory "$SourceFolder\Applications\Microsoft\Office365 ProPlus\SAC" | Out-Null
-    New-Item -ItemType Directory "$SourceFolder\Applications\Microsoft\Office365 ProPlus\SAC-t" | Out-Null
-    New-Item -ItemType Directory "$SourceFolder\Applications\Microsoft\Office365 ProPlus\Monthly" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\Applications\Microsoft\Office\ProPlus\SAC" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\Applications\Microsoft\Office\ProPlus\SAC-t" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\Applications\Microsoft\Office\ProPlus\Monthly" | Out-Null
 
     # Operating System and Boot Images/Media
     New-Item -ItemType Directory "$SourceFolder\OSD\Boot\" | Out-Null
@@ -70,9 +81,9 @@ Process{
     New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Windows\7" | Out-Null
     New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Windows\8" | Out-Null
     New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Windows\10" | Out-Null
-    New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Office365 ProPlus\SAC" | Out-Null
-    New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Office365 ProPlus\SAC-T" | Out-Null
-    New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Office365 ProPlus\Monthly" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Office\ProPlus\SAC" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Office\ProPlus\SAC-T" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Office\ProPlus\Monthly" | Out-Null
     New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\EndpointProtection" | Out-Null
 
     # Extra Folders
@@ -95,11 +106,16 @@ End{
         
         # Creating network share and granting the appropriated permissions
         New-SmbShare -Name "$NetworkShareName" -Path "$SourceFolder" -CachingMode None -FullAccess "Administrators","$DomainName\$ComputerAccount" | Out-Null
-        Grant-SmbShareAccess -Name "$NetworkShareName" -AccountName "Authenticated Users" -AccessRight Read -Confirm:$false | out-null
+        if($NetworkAccessAccount){
+            Add-NTFSAccess -Path "$SourceFolder" -Account "$Domain\$NetworkAccessAccount" -AccessRights Read | Out-Null
+            Grant-SmbShareAccess -Name "$NetworkShareName" -AccountName "$Domain\$NetworkAccessAccount" -AccessRight Read -confirm:$false | out-null
+        }
+        Grant-SmbShareAccess -Name "$NetworkShareName" -AccountName "Authenticated Users" -AccessRight Read -confirm:$false | out-null
     }Catch{
         Write-Warning "An error occurred:"
         Write-Warning $_ 
         Write-Warning "Removing folder Structure $SourceFolder"
-        Remove-Item $SourceFolder -Recurse -Force -Confirm:$false; Exit 1 
+        Remove-SmbShare -Name "$NetworkShareName" -Force -confirm:$false
+        Remove-Item $SourceFolder -Recurse -Force -confirm:$false; Exit 1 
     }
 }
