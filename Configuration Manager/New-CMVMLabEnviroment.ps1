@@ -20,20 +20,21 @@ Function Create-VM{
         [Parameter (Mandatory =$true )][String]$VMLocation,
         [Parameter (Mandatory =$true )][Array]$VMSwitch = @(),
         # Hardware
+        [Parameter (Mandatory =$false )][Array]$VMDiskSize = @("50"),
         [Parameter (Mandatory =$false )][ValidateSet (1, 2)][Int] $VMGen = 2,
         [Parameter (Mandatory =$false )][ValidateSet (1, 2, 4, 8)][Int]$VMCPUCores = 4,
-        [Parameter (Mandatory =$false )][ValidateSet ('512', '768', '1024','3072', '2048', '4096', '8192', '12288', '16384')]
-        [String]$VMMemory = '4096MB',
-        [Parameter (Mandatory =$false )][Array]$VMDiskSize = @("50"),
+        [Parameter (Mandatory =$false )][ValidateSet ('512', '768', '1024','3072', '2048', '4096', '8192', '12288', '16384')][String]$VMMemory = '4096MB',
         # Other
+        [Parameter (Mandatory =$false )][String]$VMISO,
         [Parameter (Mandatory =$false )][Switch]$VMTPM,
         [Parameter (Mandatory =$false )][Switch]$VMSecureBootOff,
-        [Parameter (Mandatory =$false )][String]$VMISO
+        [Parameter (Mandatory =$false )][ValidateSet ("Standard", "Production")][String] $VMCheckpointType = "Standard"
+
     )
     
     Try{
         New-VM -Name $VMName -MemoryStartupBytes (Invoke-Expression "$($VMMemory)MB") -Generation $VMGen -Path $VMLocation -BootDevice CD -NoVHD | Out-Null
-        Get-VMNetworkAdapter -VMName $VMName | Remove-VMNetworkAdapter
+        Set-VM -Name $VMName -SnapshotFileLocation "$VMLocation\$VMName\Checkpoints\" -CheckpointType $VMCheckpointType
         Set-VMProcessor $VMName -Count $VMCPUCores | Out-Null
 
         $x = 1
@@ -43,30 +44,35 @@ Function Create-VM{
             $x++
         }
 
+        Get-VMNetworkAdapter -VMName $VMName | Remove-VMNetworkAdapter
         foreach($NIC in $VMSwitch){
             Create-VMSwitch -Name $NIC -Type Private
-            Add-VMNetworkAdapter -VMName $VMName -Name $NIC -SwitchName $NIC            
+            Add-VMNetworkAdapter -VMName $VMName -Name "$(($NIC).Replace("$ObjectPrefix-",'')) Network Card" -SwitchName $NIC            
         }
 
-        if(($VMTPM -eq $True) -and ($VMGen -eq 2)){ 
-            if(-not (Get-HgsGuardian 'UntrustedGuardian' -ErrorAction SilentlyContinue) ){ New-HgsGuardian -Name 'UntrustedGuardian' -GenerateCertificates }
-            Set-VMKeyProtector -VMName $VMName -KeyProtector $(New-HgsKeyProtector -Owner $(Get-HgsGuardian UntrustedGuardian) -AllowUntrustedRoot).RawData
-            Enable-VMTPM $VMName
+        if($VMGen -eq 2){
+            if($VMTPM -eq $True){
+                if(-not (Get-HgsGuardian 'UntrustedGuardian' -ErrorAction SilentlyContinue) ){ New-HgsGuardian -Name 'UntrustedGuardian' -GenerateCertificates }
+                Set-VMKeyProtector -VMName $VMName -KeyProtector $(New-HgsKeyProtector -Owner $(Get-HgsGuardian UntrustedGuardian) -AllowUntrustedRoot).RawData
+                Enable-VMTPM $VMName
+            }
+            if($VMSecureBootOff){ Set-VMFirmware -VMName $VMName -EnableSecureBoot Off }
         }
 
         if($VMISO){ Set-VMDvdDrive -VMName $VMName -Path $VMISO | Out-Null }
-        if($VMSecureBootOff){ Set-VMFirmware -VMName $VMName -EnableSecureBoot Off }
     }Catch{
     
     }
 }
 
 $Location = "G:\CMSetup"
-$ObjectPrefix = "NVNet"
+$ObjectPrefix = "Demo"
 $MediaFolder = "$Location\Media"
 
+
+
 # Gateway Machine (PFsense)
-Create-VM -VMName "$ObjectPrefix-GW1" -VMLocation $Location -VMSwitch NAT,"$ObjectPrefix-Datacenter","$ObjectPrefix-Tokyo" -VMCPUCores 2 -VMDiskSize 30 -VMMemory 768 -VMGen 2 -VMSecureBootOff -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "pfSense*.iso" }).fullname
+Create-VM -VMName "$ObjectPrefix-GW1" -VMLocation $Location -VMSwitch NAT,"$ObjectPrefix-Datacenter","$ObjectPrefix-Tokyo" -VMCPUCores 2 -VMDiskSize 30 -VMMemory 768 -VMGen 2 -VMSecureBootOff -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "pfSense*" }).fullname
 
 # Domain Controller (Windows Server Core 2019)
 Create-VM -VMName "$ObjectPrefix-DC1" -VMLocation $Location -VMSwitch "$ObjectPrefix-Datacenter" -VMCPUCores 4 -VMDiskSize 50 -VMMemory 2048 -VMGen 2 -VMTPM -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "*SERVER_EVAL*" }).fullname
