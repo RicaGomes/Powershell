@@ -69,8 +69,6 @@ $Location = "G:\CMSetup"
 $ObjectPrefix = "Demo"
 $MediaFolder = "$Location\Media"
 
-
-
 # Gateway Machine (PFsense)
 Create-VM -VMName "$ObjectPrefix-GW1" -VMLocation $Location -VMSwitch NAT,"$ObjectPrefix-Datacenter","$ObjectPrefix-Tokyo" -VMCPUCores 2 -VMDiskSize 30 -VMMemory 768 -VMGen 2 -VMSecureBootOff -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "pfSense*" }).fullname
 
