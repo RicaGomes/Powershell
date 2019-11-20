@@ -27,8 +27,6 @@ Param(
     [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [STRING]$NetworkShareName,
     [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()]
-    [STRING]$SCCMMachineName = $env:COMPUTERNAME,
-    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()]
     [STRING]$DomainName = $env:USERDOMAIN,
     [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()]
     [STRING]$NetworkAccessAccount = $null,
@@ -53,7 +51,7 @@ Begin{
         Write-Warning $_ ; Exit 1 
     }
     
-    $ComputerAccount = $SCCMMachineName+"$"
+    $ComputerAccount = $env:COMPUTERNAME+"$"
 }
 
 Process{
@@ -105,7 +103,7 @@ End{
         if(Test-Path -Path "$SourceFolder\Logs"){ Add-NTFSAccess -Path "$SourceFolder\Logs" -Account "Domain Computers" -AccessRights Modify | Out-Null }
         
         # Creating network share and granting the appropriated permissions
-        New-SmbShare -Name "$NetworkShareName" -Path "$SourceFolder" -CachingMode None -FullAccess "Administrators","$DomainName\$ComputerAccount" | Out-Null
+        New-SmbShare -Name "$NetworkShareName" -Path "$SourceFolder" -CachingMode None -FullAccess "Administrators","$DomainName\$ComputerAccount" -Description "'Configuration Manager' Sources folder for Packages, Applications, Drivers, etc... " | Out-Null
         if($NetworkAccessAccount){
             Add-NTFSAccess -Path "$SourceFolder" -Account "$Domain\$NetworkAccessAccount" -AccessRights Read | Out-Null
             Grant-SmbShareAccess -Name "$NetworkShareName" -AccountName "$Domain\$NetworkAccessAccount" -AccessRight Read -confirm:$false | out-null
