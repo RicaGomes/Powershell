@@ -15,17 +15,17 @@ if (Get-WmiObject -Namespace 'root\CIMV2\Security\MicrosoftVolumeEncryption' -Cl
 
 # Set Task Sequence Variables to be used
 # Expected Values:
-# 	TPMIsOwned				    True or False
-# 	TPMIsActive				    True or False
-# 	TPMIsEnabled			    True or False
+# 	TPMIsOwned				True or False
+# 	TPMIsActive				True or False
+# 	TPMIsEnabled			True or False
 # 	BitLockerIsEnabled		True or False
-# 	SecureBoot				    True or False
-#	  BitLockerIsEnabled		True or False
+# 	SecureBoot				True or False
+#	BitLockerIsEnabled		True or False
 $SMSTSEnvironment.Value('TPMIsOwned') = $TPMChipInfo.IsOwned_InitialValue
 $SMSTSEnvironment.Value('TPMIsActive') = $TPMChipInfo.IsActivated_InitialValue
 $SMSTSEnvironment.Value('TPMIsEnabled') = $TPMChipInfo.IsEnabled_InitialValue
 $SMSTSEnvironment.Value('BitLockerIsEnabled') = $ProtectionStatus -match "1"
-$SMSTSEnvironment.Value('SecureBootIsActive') = Confirm-SecureBootUEFI
+$SMSTSEnvironment.Value('SecureBootIsEnabled') = Confirm-SecureBootUEFI
 
 # Generate Random Bitlocker PIN
 if($TPMChipInfo.IsEnabled_InitialValue -eq $True){
