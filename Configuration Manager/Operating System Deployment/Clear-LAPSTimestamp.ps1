@@ -2,9 +2,11 @@
   Run after WinPE Phase
   If you use LAPS, after a device wipe and load the local admin password stored in Active Directory will no longer be valid. 
   Depending on the last time the password change was triggered (updating it in Active Directory and regenerating a new timestamp) 
-  and the next time change the password according to policy (in days), you will loose access to the Local Administrator. 
-  To prevent this, during the OSD Task Sequence run this script to clear 'ms-Mcs-AdmPwdExpirationTime' in the computer object
-  and force LAPS to generate a new password after the Device grabs the domain policies.
+  and the next time change the password according to policy (in days), you may find your self locked from using the Local 
+  Administrator for this device.
+  
+  To prevent this, run this script during the OSD Task Sequence to clear 'ms-Mcs-AdmPwdExpirationTime' in the Active Directory
+  computer object and force LAPS to generate a new password after the Device grabs the domain policies.
 #>
 # Get NetBIOS domain name
 $Info=new-object -com ADSystemInfo
