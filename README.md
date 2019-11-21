@@ -6,3 +6,4 @@ This repository is used so i can keep track of all my public scripts. Amongs the
 * Scripts that i found as they were downloaded, somehere in time and space on the internet
 * And finally some i modified to fit my needs
 
+![Alt text](https://raw.githubusercontent.com/criostage/Powershell/master/cat.jpg "Cat")
