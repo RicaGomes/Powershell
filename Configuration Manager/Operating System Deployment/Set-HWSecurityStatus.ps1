@@ -1,3 +1,4 @@
+# Runs during WinPE Phase 
 # Loading SCCM ComObject so we can set Task Sequence Variables
 $SMSTSEnvironment = New-Object -COMObject Microsoft.SMS.TSEnvironment
 
