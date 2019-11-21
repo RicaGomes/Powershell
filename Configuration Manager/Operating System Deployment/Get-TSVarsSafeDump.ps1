@@ -16,8 +16,8 @@ $ExcludeVariables = @('_OSDOAF','_SMSTSReserved','_SMSTSTaskSequence')
 
 # Config End
 
-$tsenv = New-Object -COMObject Microsoft.SMS.TSEnvironment 
-$logPath = $tsenv.Value("_SMSTSLogPath")
+$SMSTSEnvironment = New-Object -COMObject Microsoft.SMS.TSEnvironment 
+$logPath = $SMSTSEnvironment.Value("_SMSTSLogPath")
 $now = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
 $logFile = "TSVariables-$now.log"
 $logFileFullName = Join-Path -Path $logPath -ChildPath $logFile
@@ -32,8 +32,8 @@ function MatchArrayItem {
     return $result
 }
 
-$tsenv.GetVariables() | % {
+$SMSTSEnvironment.GetVariables() | % {
     if(!(MatchArrayItem -Arr $ExcludeVariables -Item $_)) {
-        "$_ = $($tsenv.Value($_))" | Out-File -FilePath $logFileFullName -Append
+        "$_ = $($SMSTSEnvironment.Value($_))" | Out-File -FilePath $logFileFullName -Append
     }
 }
