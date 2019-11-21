@@ -1,7 +1,7 @@
 <# 
-	Runs during WinPE Phase, before drive formatting.
-	Gathers and stores in Task Sequence Variables, information about the device TPM Chip readiness (if it's enabled, owned and active) and if
-	Secure Boot is enabled in UEFI. These Task Sequence Variables then can be used to trigger certain actions during the Task Sequence OSD.
+  Runs during WinPE Phase, before drive formatting.
+  Gathers and stores in Task Sequence Variables, information about the device TPM Chip readiness (if it's enabled, owned and active) and if
+  Secure Boot is enabled in UEFI. These Task Sequence Variables then can be used to trigger certain actions during the Task Sequence OSD.
 #>
 # Loading SCCM ComObject so we can set Task Sequence Variables
 $SMSTSEnvironment = New-Object -COMObject Microsoft.SMS.TSEnvironment
