@@ -74,6 +74,7 @@ Process{
 
     # Log folder
     New-Item -ItemType Directory "$SourceFolder\Logs\DesktopAnalytics" | Out-Null
+    New-Item -ItemType Directory "$SourceFolder\Logs\InPlaceUpgrade" | Out-Null
 
     # Software update for ADR Packages
     New-Item -ItemType Directory "$SourceFolder\SoftwareUpdates\Windows\7" | Out-Null
@@ -89,7 +90,6 @@ Process{
         New-Item -ItemType Directory "$SourceFolder\Tools" | Out-Null
         New-Item -ItemType Directory "$SourceFolder\Import" | Out-Null
         New-Item -ItemType Directory "$SourceFolder\Capture" | Out-Null
-        New-Item -ItemType Directory "$SourceFolder\Logs\MDT" | Out-Null
     }
 }
 
@@ -97,11 +97,10 @@ End{
     Try{
         # Adding NTFS Permissions to Allow Access
         Add-NTFSAccess -Path "$SourceFolder" -Account "Domain Computers" -AccessRights Read | Out-Null 
+        Add-NTFSAccess -Path "$SourceFolder\Logs" -Account "Domain Computers" -AccessRights Modify | Out-Null 
         Add-NTFSAccess -Path "$SourceFolder" -Account "$DomainName\$ComputerAccount" -AccessRights FullControl | Out-Null
         Add-NTFSAccess -Path "$SourceFolder" -Account "Administrators" -AccessRights FullControl | Out-Null
-        # Comment, remove or adapt this line if the Logs folder was moved from the path specified in the Sourcefolder variable
-        if(Test-Path -Path "$SourceFolder\Logs"){ Add-NTFSAccess -Path "$SourceFolder\Logs" -Account "Domain Computers" -AccessRights Modify | Out-Null }
-        
+                
         # Creating network share and granting the appropriated permissions
         New-SmbShare -Name "$NetworkShareName" -Path "$SourceFolder" -CachingMode None -FullAccess "Administrators","$DomainName\$ComputerAccount" -Description "'Configuration Manager' Sources folder for Packages, Applications, Drivers, etc... " | Out-Null
         if($NetworkAccessAccount){
