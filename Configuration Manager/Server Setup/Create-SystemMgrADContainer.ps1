@@ -9,7 +9,7 @@ Function Create-SystemMgrADContainer{
     $ContainerPath = "CN=System,$($DomainInfo.DistinguishedName)"
     
 
-    if(!Test-Path -Path $ContainerPath){
+    if(!(Test-Path -Path $ContainerPath)){
         $Container = New-ADObject -Type Container -name $ContainerName -Path $ContainerPath -PassThru    
         $ContainerACL = (Get-ACL "AD:$($Container.DistinguishedName)")
         $ConfigMgrServerSID = [System.Security.Principal.SecurityIdentifier](Get-ADComputer $ConfigMgrServer).SID
