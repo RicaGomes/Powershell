@@ -60,6 +60,7 @@ Foreach($User in $WebData.results ){
     New-ADUser @ADUserObj -Path $TargetOUName -Server $DomainPDC -ErrorAction SilentlyContinue
     Invoke-WebRequest $User.picture.large -OutFile .\tmp.jpg
     Set-ADUser $ADUserObj["SamAccountName"] -Replace @{thumbnailPhoto=([byte[]](Get-Content .\tmp.jpg -Encoding byte))}
+    Start-Sleep -Milliseconds 500
 }
 
 Remove-Item .\tmp.jpg -Force
