@@ -90,8 +90,8 @@ Create-VM -VMName "$ObjectPrefix-GW1" -VMLocation $VMsFolder -VMSwitch InternalN
 Create-VM -VMName "$ObjectPrefix-DC1" -VMLocation $VMsFolder -VMSwitch "$ObjectPrefix-Datacenter" -VMCPUCores 4 -VMDiskSize 50 -VMMemory 4096 -VMGen 2 -VMTPM -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "*SERVER_EVAL*" }).fullname
 
 # Configurarion Manager (Windows Server 2019)
-Create-VM -VMName "$ObjectPrefix-CM1" -VMLocation $VMsFolder -VMSwitch "$ObjectPrefix-Datacenter" -VMCPUCores 4 -VMDiskSize 120,500,40,40,40 -VMMemory 12288 -VMGen 2 -VMTPM -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "*SERVER_EVAL*" }).fullname
+Create-VM -VMName "$ObjectPrefix-CM1" -VMLocation $VMsFolder -VMSwitch "$ObjectPrefix-Datacenter" -VMCPUCores 4 -VMDiskSize 120,200,40,40,40 -VMMemory 12288 -VMGen 2 -VMTPM -VMISO (Get-ChildItem -Path $MediaFolder | Where-Object { $_.Name -like "*SERVER_EVAL*" }).fullname
 
 # Windows Enterprise Clients
-Create-VM -VMName "$ObjectPrefix-W10-1909-AD-01" -VMLocation $Location -VMSwitch "$ObjectPrefix-SiteA" -VMCPUCores 4 -VMDiskSize 50 -VMMemory 4096 -VMGen 2 -VMTPM
-Create-VM -VMName "$ObjectPrefix-W10-1909-AP-01" -VMLocation $Location -VMSwitch "$ObjectPrefix-SiteA" -VMCPUCores 4 -VMDiskSize 50 -VMMemory 4096 -VMGen 2 -VMTPM
+#Create-VM -VMName "$ObjectPrefix-W10-1909-AD-01" -VMLocation $Location -VMSwitch "$ObjectPrefix-SiteA" -VMCPUCores 4 -VMDiskSize 50 -VMMemory 4096 -VMGen 2 -VMTPM
+#Create-VM -VMName "$ObjectPrefix-W10-1909-AP-01" -VMLocation $Location -VMSwitch "$ObjectPrefix-SiteA" -VMCPUCores 4 -VMDiskSize 50 -VMMemory 4096 -VMGen 2 -VMTPM
