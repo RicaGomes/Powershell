@@ -1,0 +1,42 @@
+{
+	"ActiveDirectorySites": [{
+        "Name": "Datacenter",
+		"Defaultsite": "Yes",
+        "Network": "10.0.0.0",
+        "NetworkBits": "24",
+        "Gateway": "10.0.0.254",
+        "DHCPSettings": {
+            "LeaseDuration": "3.00:00:00",
+            "StartRange": "10.0.0.1",
+            "EndRange": "10.0.0.254",
+            "Exclusions": [{
+                    "Start": "10.0.0.1",
+                    "End": "10.0.0.99"
+                },{
+                    "Start": "10.0.0.199",
+                    "End": "10.0.0.254"
+                }
+            ]
+        }
+	},
+	{
+		"Name": "SiteA",
+		"Defaultsite": "No",
+        "Network": "10.0.1.0",
+        "NetworkBits": "24",
+        "Gateway": "10.0.1.254",
+        "DHCPSettings": {
+            "LeaseDuration": "3.00:00:00",
+            "StartRange": "10.0.1.1",
+            "EndRange": "10.0.1.254",
+            "Exclusions": [{
+                "Start": "10.0.1.1",
+                "End": "10.0.1.99"
+                },{
+                "Start": "10.0.1.199",
+                 "End": "10.0.1.254"
+            }
+        ]
+        }
+	}]
+}
