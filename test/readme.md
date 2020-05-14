@@ -14,3 +14,8 @@ Copy the <b>Action-UpdateDNSJson.ps1</b> script to the redbox
 ```
 .\Action-UpdateDNSJson.ps1 -Install -DCIpAddr 192.168.2.6
 ```
+
+
+```
+.\Action-UpdateDNSFowarders.ps1 -Install
+```
