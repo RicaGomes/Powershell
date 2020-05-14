@@ -17,7 +17,7 @@ Copy the <b>Action-UpdateDNSJson.ps1</b> script to the c:\Scripts\ folder in the
 ##### Arguments explanation
 - <b>Install</b> (Boolean): This argument is meant to automate the initial deployment of the script on the Hyper-V host. This flag will trigger the following actions:
   - Disable the existing <B>Action-UpdateDHCPDNS</B> scheduled task
-  - Create a new scheduled task to run the <B>Action-UpdateDNSJson.ps1</B> at the system boot
+  - Creates a new scheduled task named after the script name <B>Action-UpdateDNSJson.ps1</B> that will run at the system startup
   - Reconfigure the DHCP Scopes lease duration to 12 hours, set both "<b>006 DNS Servers</b>" and "<b>042 Time Servers</b>" options with the domain controller IP Address (see: <b>DCIpAddr</b>). Default value: <b>false</b>
 - <b>DCIpAddr</b> (String): Specifies the IP Address for the domain controller. Default value: <b>192.168.2.6</b>
 
