@@ -7,7 +7,7 @@
 
 ### Prerequisites
 
-### Installing
+### Installation
 
 Copy the <b>Action-UpdateDNSJson.ps1</b> script to the redbox
 ```
