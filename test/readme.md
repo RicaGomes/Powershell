@@ -9,8 +9,8 @@
 
 ### Installing
 
-Copy <b>Action-UpdateDNSJson.ps1</b> script to the redbox
+Copy the <b>Action-UpdateDNSJson.ps1</b> script to the redbox
 
 ```
-aaaaa
+.\Action-UpdateDNSJson.ps1 -Install -DCIpAddr 192.168.2.6
 ```
