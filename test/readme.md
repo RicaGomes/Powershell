@@ -10,7 +10,6 @@ These scripts were created with the intent to automate the configuration and upd
 Copy the <b>Action-UpdateDNSJson.ps1</b> script to the c:\Scripts\ folder in the system drive of your Hyper-v host. Open a powershell command line as administrator, navigate to the folder Scripts folder and execute the script as follows:
 <b>
 ```powershell
-cd c:\Scripts\
 .\Action-UpdateDNSJson.ps1 -Install -DCIpAddr 192.168.2.6
 ```
 </b>
@@ -22,10 +21,9 @@ cd c:\Scripts\
   - Reconfigure the DHCP Scopes lease duration to 12 hours, "<b>006 DNS Servers</b>" and "<b>042 Time Servers</b>" to match the domain controller IP Address (set by the flag <b>DCIpAddr</b>)
 - <b>DCIpAddr</b>:
 
-Next copy the <b>Action-UpdateDNSFowarders.ps1</b> script to the newly created domain controller
+Next copy the <b>Action-UpdateDNSFowarders.ps1</b> script into your Domain controller
 <b>
 ```powershell
-cd c:\Scripts\
 .\Action-UpdateDNSFowarders.ps1 -Install
 ```
 </b>
