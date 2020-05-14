@@ -9,7 +9,7 @@
 
 ### Installing
 
-Copy Action-UpdateDNSFowarders.ps1 script to the redbox
+Copy <b>Action-UpdateDNSJson.ps1</b> script to the redbox
 
 ```
 aaaaa
