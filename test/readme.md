@@ -15,7 +15,7 @@ Copy the <b>Action-UpdateDNSJson.ps1</b> script to the hyper-v host
 - <b>Install</b>: This flag is only meant to automate the initial deployment of the script. 
 - <b>DCIpAddr</b>:
 
-Copy the <b>Action-UpdateDNSFowarders.ps1</b> script to the redbox
+Next copy the <b>Action-UpdateDNSFowarders.ps1</b> script to the newly created domain controller
 ```powershell
 .\Action-UpdateDNSFowarders.ps1 -Install
 ```
