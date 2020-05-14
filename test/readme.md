@@ -16,7 +16,7 @@ cd c:\Scripts\
 </b>
 
 ##### Arguments explanation
-- <b>Install</b>: This flag is only meant to automate the initial deployment of the script on the Hyper-V host. The <b>Install</b> flag will trigger the following actions:
+- <b>Install</b>: This flag is only meant to automate the initial deployment of the script onto the Hyper-V host. The <b>Install</b> flag will trigger the following actions:
   - Disable the existing <B>Action-UpdateDHCPDNS</B> scheduled task
   - Create a new scheduled task to run the <B>Action-UpdateDNSJson.ps1</B>
   - Reconfigure the DHCP Scopes lease duration to 12 hours, "<b>006 DNS Servers</b>" and "<b>042 Time Servers</b>" to match the domain controller IP Address (set by the flag <b>DCIpAddr</b>)
