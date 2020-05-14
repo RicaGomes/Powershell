@@ -19,3 +19,4 @@ Copy the <b>Action-UpdateDNSJson.ps1</b> script to the redbox
 ```
 .\Action-UpdateDNSFowarders.ps1 -Install
 ```
+
