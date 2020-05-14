@@ -3,6 +3,14 @@
 - [X] 1
 - [ ] 2
 
-# Installation
+# Getting Started
 
-a
+## Prerequisites
+
+## Installing
+
+Copy Action-UpdateDNSFowarders.ps1 script to the redbox
+
+```
+aaaaa
+```
