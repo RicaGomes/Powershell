@@ -5,9 +5,9 @@
 
 ## Getting Started
 
-## Prerequisites
+### Prerequisites
 
-## Installation
+### Installation
 
 Copy the <b>Action-UpdateDNSJson.ps1</b> script to the redbox
 ```powershell
@@ -18,8 +18,3 @@ Copy the <b>Action-UpdateDNSFowarders.ps1</b> script to the redbox
 ```powershell
 .\Action-UpdateDNSFowarders.ps1 -Install
 ```
-
-## Features
-## Usage (Optional)
-## Documentation (Optional)
-## Tests (Optional)
