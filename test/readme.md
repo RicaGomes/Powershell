@@ -3,11 +3,11 @@
 - [X] 1
 - [ ] 2
 
-# Getting Started
+## Getting Started
 
-## Prerequisites
+### Prerequisites
 
-## Installing
+### Installing
 
 Copy Action-UpdateDNSFowarders.ps1 script to the redbox
 
