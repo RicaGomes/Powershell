@@ -7,7 +7,7 @@ These scripts were created with the intent to automate the configuration and upd
 
 ### Installation
 
-Copy the <b>Action-UpdateDNSJson.ps1</b> script to the <B>c:\Scripts\</B> folder in the system drive of your Hyper-v host. Open a powershell command line as administrator, navigate to the folder Scripts folder and execute the script as follows:
+Copy the <b>Action-UpdateDNSJson.ps1</b> script to the <b>c:\Scripts\</b> folder in the system drive of your Hyper-v host. Open a powershell command line as administrator, navigate to the folder Scripts folder and execute the script as follows:
 ```powershell
 cd c:\Scripts\
 .\Action-UpdateDNSJson.ps1 -Install -DCIpAddr 192.168.2.6
