@@ -14,6 +14,7 @@ cd c:\Scripts\
 .\Action-UpdateDNSJson.ps1 -Install -DCIpAddr 192.168.2.6
 ```
 </b>
+
 ##### Arguments explanation
 - <b>Install</b>: This flag is only meant to automate the initial deployment of the script. The <b>Install</b> flag will trigger the following actions:
   - It will disable the <B>Action-UpdateDHCPDNS</B> scheduled task
@@ -21,7 +22,9 @@ cd c:\Scripts\
 - <b>DCIpAddr</b>:
 
 Next copy the <b>Action-UpdateDNSFowarders.ps1</b> script to the newly created domain controller
+<b>
 ```powershell
 cd c:\Scripts\
 .\Action-UpdateDNSFowarders.ps1 -Install
 ```
+</b>
