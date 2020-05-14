@@ -11,6 +11,7 @@ Copy the <b>Action-UpdateDNSJson.ps1</b> script to the hyper-v host
 ```powershell
 .\Action-UpdateDNSJson.ps1 -Install -DCIpAddr 192.168.2.6
 ```
+Arguments explanation
 - -install
 - -DCIpAddr
 
